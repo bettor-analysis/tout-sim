@@ -186,7 +186,7 @@ server <- function(input, output, session) {
     if (!is.null(sims)) {
       bettor_end <- sapply(sims, function(x) x$final_bettor)
       tout_end <- sapply(sims, function(x) x$final_tout)
-      bettor_roi <- round(((bettor_end - (input$bankroll - input$package_cost)) / (input$bankroll - input$package_cost)) * 100, 2)
+      bettor_roi <- round(((bettor_end - input$bankroll) / (input$bankroll)) * 100, 2)
       tout_roi <- round(((tout_end - (input$bankroll + input$package_cost)) / (input$bankroll + input$package_cost)) * 100, 2)
       cat("Mean Final Bankroll (Tout): $", round(mean(tout_end), 2), "\n")
       cat("Mean Final Bankroll (Bettor): $", round(mean(bettor_end), 2), "\n")
