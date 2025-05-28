@@ -1,5 +1,5 @@
-# Simple Shiny App Prototype: The Cost of Buying Picks from Touts (Expanded)
-# Author: Adam Wickwire - Bettor Analysis
+# The Cost of Buying Picks from Touts 
+# Adam Wickwire - Bettor Analysis
 
 library(shiny)
 library(dplyr)
