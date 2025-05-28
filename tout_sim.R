@@ -60,7 +60,7 @@ server <- function(input, output, session) {
     profit_tout[1] <- profit_tout[1] + input$package_cost
     profit_bettor <- ifelse(missed_bets == 1, 0, ifelse(outcomes == 1, (decimal_bettor - 1) * input$unit_size, -input$unit_size))
     
-    bankroll_tout <- input$bankroll + input$package_cost + cumsum(c(0, profit_tout))
+    bankroll_tout <- input$bankroll + cumsum(c(0, profit_tout))  # FIXED: removed package_cost double-counting
     bettor_bankroll <- numeric(input$num_picks + 1)
     bettor_bankroll[1] <- input$bankroll
     extra_funds <- 0
@@ -86,8 +86,8 @@ server <- function(input, output, session) {
       Bettor_Odds = round(adjusted_odds),
       Win = outcomes,
       Missed = missed_bets,
-      Profit_Tout = round(cumsum(profit_tout), 2), # includes package cost in first pick
-      Profit_Bettor = round(bettor_bankroll[-1] - input$bankroll, 2) # fully reflects package + bets
+      Profit_Tout = round(cumsum(profit_tout), 2),
+      Profit_Bettor = round(bettor_bankroll[-1] - input$bankroll, 2)
     )
     
     list(
@@ -150,8 +150,8 @@ server <- function(input, output, session) {
       bettor_roi <- round(((sim$final_bettor - input$bankroll) / input$bankroll) * 100, 2)
       diff <- round(sim$final_tout - sim$final_bettor, 2)
       
-      cat("Final Bankroll (Tout): $", sim$final_tout, "\n")
-      cat("Final Bankroll (Bettor): $", sim$final_bettor, "\n")
+      cat("Final Bankroll (Tout): $", round(sim$final_tout, 2), "\n")
+      cat("Final Bankroll (Bettor): $", round(sim$final_bettor, 2), "\n")
       cat("Tout ROI: ", tout_roi, "%\n")
       cat("Bettor ROI: ", bettor_roi, "%\n")
       cat("Difference in Profit: $", diff, "\n")
@@ -186,17 +186,14 @@ server <- function(input, output, session) {
     if (!is.null(sims)) {
       bettor_end <- sapply(sims, function(x) x$final_bettor)
       tout_end <- sapply(sims, function(x) x$final_tout)
-      bettor_roi <- round(((bettor_end - input$bankroll) / (input$bankroll)) * 100, 2)
-      tout_roi <- round(((tout_end - (input$bankroll + input$package_cost)) / (input$bankroll + input$package_cost)) * 100, 2)
+      bettor_roi <- round(((bettor_end - input$bankroll) / input$bankroll) * 100, 2)
+      tout_roi <- round(((tout_end - input$bankroll) / input$bankroll) * 100, 2)
       cat("Mean Final Bankroll (Tout): $", round(mean(tout_end), 2), "\n")
       cat("Mean Final Bankroll (Bettor): $", round(mean(bettor_end), 2), "\n")
       cat("Median Final Bankroll (Tout): $", round(median(tout_end), 2), "\n")
       cat("Median Final Bankroll (Bettor): $", round(median(bettor_end), 2), "\n")
       cat("Mean ROI (Tout): ", round(mean(tout_roi), 2), "%\n")
       cat("Mean ROI (Bettor): ", round(mean(bettor_roi), 2), "%\n")
-      
-      
-      
     }
   })
 }
