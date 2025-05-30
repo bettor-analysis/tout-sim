@@ -6,6 +6,8 @@ This Shiny application reveals the **true cost of buying picks from touts** by s
 
 The tool is designed to educate bettors on how even winning touts can lead subscribers to **long-term losses** due to inefficient pricing and logistical constraints.
 
+YouTube : https://youtu.be/qEWwSucg9-I?si=OazGjxnTuF16_eEz
+
 ## Features
 
 - **Simulated Pick Package Results**: See bet-by-bet outcomes for both the tout and the bettor.
